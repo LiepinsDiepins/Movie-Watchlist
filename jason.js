@@ -25,10 +25,10 @@ document.addEventListener('DOMContentLoaded', function() {
 async function loadRandomMovies() {
     const randomMoviesGrid = document.getElementById('randomMovies');
     randomMoviesGrid.innerHTML = '';
-    
-    const shuffled = [...popularMovies].sort(() => 0.5 - Math.random());
+  
+   const shuffled = [...popularMovies].sort(() => 0.5 - Math.random());
     const selectedMovies = shuffled.slice(0, 6);
-    
+   
     for (const movieTitle of selectedMovies) {
         try {
             const movie = await fetchMovieData(movieTitle);
@@ -40,6 +40,21 @@ async function loadRandomMovies() {
             console.error('Error loading random movie:', error);
         }
     }
+}
+
+function WatchModeAPI(watch) {
+    const axios = require('axios');
+
+const getStreamingAvailability = async (titleId) => {
+    try {
+        const response = await axios.get(`https://api.watchmode.com/v1/title/${titleId}?apiKey=YUPKihGylNlCVQG4uqKDMYyfLwuwk6lCtXgoxf7z`);
+        return response.data;
+    } catch (error) {
+        console.error(error);
+    }
+};
+
+getStreamingAvailability('101');
 }
 
 function createMovieCard(movie) {
@@ -71,6 +86,30 @@ async function searchMovie() {
     try {
         const movie = await fetchMovieData(movieTitle);
         displayMovieResults(movie);
+
+        const watchmodeApiKey = 'YUPKihGylNlCVQG4uqKDMYyfLwuwk6lCtXgoxf7z';
+
+        const searchRes = await fetch(`https://api.watchmode.com/v1/search/?apiKey=${watchmodeApiKey}&search_field=name&search_value=${encodeURIComponent(movieTitle)}`);
+        const searchData = await searchRes.json();
+
+        if (searchData.title.results.length > 0) {
+            const movieId = searchData.title_results[0].id;
+
+            const sourcesRes = await fetch(`https://api.watchmode.com/v1/title/${movieId}/sources/?apiKey=${watchmodeApiKey}`);
+            const sourcesData = await sourcesRes.json();
+
+            const bestSource = sourcesData.find(source => source.type === 'free' || source.type === 'sub');
+
+                }
+                if (bestSource) {
+                    const watchDiv =document.createElement('div');
+                    watchDiv.className = 'watch-link';
+                    watchDiv.innerHTML = `
+                        <p><strong>Skaties šeit:</strong> ${bestSource.web_url}${bestSource.name}</a></p>
+                    `;
+                    movieDiv.appendChild(watchDiv);
+                }
+
     } catch (error) {
         console.error('Error:', error);
         movieDiv.innerHTML = `
