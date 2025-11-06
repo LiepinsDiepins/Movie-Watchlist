@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Search for movies</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="logo">
+                <!--<i class="fas fa-film"></i>-->
+                <h1>Movie-watchlist</h1>
+            </div>
+            <p class="tagline">Discover movies from all around the world</p>
+        </div>
+
+        <div class="search-section">
+            <div class="search-box">
+                <input id="movieInput" type="text" placeholder="Prison Break">
+                <button id="searchBtn">
+                    <i class="fas fa-search"></i>
+                    Search
+                </button>
+            </div>
+        </div>
+
+        <div class="random-movies-section">
+            <h2> Some Popular Movies You Might Like</h2>
+            <div id="randomMovies" class="movies-grid">
+            </div>
+        </div>
+
+        <div id="movie" class="movie-results"></div>
+    </div>
+
+    <div class="movie-box" id="randomMovieBox">
+        <h2>Random Movie</h2>
+        <p id="movieTitle">Loading...</p>
+        <div id="watchLink"></div>
+    </div>
+
+    <script src="jason.js"></script>
+</body>
+</html>
