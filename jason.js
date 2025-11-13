@@ -4,18 +4,19 @@ document.getElementById('movieInput').addEventListener('keypress', function(e) {
 });
 
 const popularMovies = [
-    'The Shawshank Redemption',
-    'The Godfather',
-    'The Dark Knight',
-    'Pulp Fiction',
-    'Forrest Gump',
-    'Inception',
-    'The Matrix',
+    'Cars 1',
+    'Spongebob',
+    'Prison break',
+    'the maze runner',
+    'Suits',
+    'Flow',
+    'Cars 2',
     'Avengers: Endgame',
-    'Spirited Away',
-    'Parasite',
-    'Interstellar',
-    'The Lion King'
+    'Cars 3',
+    'Creed',
+    'Vinas melo labak',
+    'The Lion King',
+    'wreck-it ralph'
 ];
 
 document.addEventListener('DOMContentLoaded', function() {
@@ -42,24 +43,10 @@ async function loadRandomMovies() {
     }
 }
 
-function WatchModeAPI(watch) {
-    const axios = require('axios');
-
-const getStreamingAvailability = async (titleId) => {
-    try {
-        const response = await axios.get(`https://api.watchmode.com/v1/title/${titleId}?apiKey=YUPKihGylNlCVQG4uqKDMYyfLwuwk6lCtXgoxf7z`);
-        return response.data;
-    } catch (error) {
-        console.error(error);
-    }
-};
-
-getStreamingAvailability('101');
-}
-
 function createMovieCard(movie) {
     const card = document.createElement('div');
-    card.className - 'movie-card';
+    card.className = 'movie-card';
+
     card.innerHTML = `
         <img src="${movie.Poster !== 'N/A' ? movie.Poster : 'https://via.placeholder.com/200x300/333/fff?text=No+Image'}" 
         alt="${movie.Title}"
@@ -78,38 +65,14 @@ function createMovieCard(movie) {
 async function searchMovie() {
     const movieTitle = document.getElementById('movieInput').value.trim();
     if (!movieTitle) return;
-    
+
     const movieDiv = document.getElementById('movie');
     movieDiv.innerHTML = '<div style="text-align: center; padding: 20px;">Loading...</div>';
     movieDiv.classList.add('active');
-    
+
     try {
-        const movie = await fetchMovieData(movieTitle);
+        const movie = await fetchMovieData(movieTitle); 
         displayMovieResults(movie);
-
-        const watchmodeApiKey = 'YUPKihGylNlCVQG4uqKDMYyfLwuwk6lCtXgoxf7z';
-
-        const searchRes = await fetch(`https://api.watchmode.com/v1/search/?apiKey=${watchmodeApiKey}&search_field=name&search_value=${encodeURIComponent(movieTitle)}`);
-        const searchData = await searchRes.json();
-
-        if (searchData.title.results.length > 0) {
-            const movieId = searchData.title_results[0].id;
-
-            const sourcesRes = await fetch(`https://api.watchmode.com/v1/title/${movieId}/sources/?apiKey=${watchmodeApiKey}`);
-            const sourcesData = await sourcesRes.json();
-
-            const bestSource = sourcesData.find(source => source.type === 'free' || source.type === 'sub');
-
-                }
-                if (bestSource) {
-                    const watchDiv =document.createElement('div');
-                    watchDiv.className = 'watch-link';
-                    watchDiv.innerHTML = `
-                        <p><strong>Skaties šeit:</strong> ${bestSource.web_url}${bestSource.name}</a></p>
-                    `;
-                    movieDiv.appendChild(watchDiv);
-                }
-
     } catch (error) {
         console.error('Error:', error);
         movieDiv.innerHTML = `
@@ -120,6 +83,7 @@ async function searchMovie() {
         `;
     }
 }
+
 
 async function fetchMovieData(movieTitle) {
     const apiKey = 'a833c3fc';
